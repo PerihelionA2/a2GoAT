@@ -46,7 +46,10 @@ public:
 
 	void 	MissingMassPDG(Int_t pdg, TH1* Hprompt, TH1* Hrandom);
 	Bool_t	FillMissingMass(Int_t particle_index, TH1* Hprompt, TH1* Hrandom);
+	Bool_t	FillTheta(Int_t particle_index, TH1* Tprompt, TH1* Trandom, TH1* Eprompt, TH1* Erandom);
 	Bool_t 	FillMissingMassPair(Int_t particle_index, Int_t tagger_index, TH1* Hprompt, TH1* Hrandom);
+	Bool_t  FillThetaPair(Int_t particle_index, Int_t tagger_index,TH1* Tprompt, TH1* Trandom);
+	Bool_t	FillEnergy(Int_t Particle_index, Int_t tagger_index, TH1* Eprompt, TH1* Erandom);
 	Double_t CalcMissingMass(Int_t particle_index, Int_t tagger_index);
 	Double_t CalcMissingEnergy(Int_t particle_index, Int_t tagger_index);
     TLorentzVector CalcMissingP4(Int_t particle_index, Int_t tagger_index);

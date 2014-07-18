@@ -38,6 +38,8 @@ GAcquTreeManager::GAcquTreeManager() :
 				BaF2_PbWO4_Hits(0),
 				nVeto_Hits(0),
 				Veto_Hits(0),
+				Heli(0),
+				nErr(0),
 				ESum(0),
 				Mult(0),
 				EventNumber(0),
@@ -183,8 +185,10 @@ Bool_t    GAcquTreeManager::OpenTreeTrigger(TFile* TreeFile)
 	if(!treeTrigger) return kFALSE;
 	cout << "treeTrigger opened." << endl;
 
-	treeTrigger->SetBranchAddress("ESum", &ESum);
-	treeTrigger->SetBranchAddress("Mult", &Mult);
+	treeTrigger->SetBranchAddress("nError",      &nErr);
+	treeTrigger->SetBranchAddress("Helicity",  &Heli);
+	treeTrigger->SetBranchAddress("ESum",      &ESum);
+	treeTrigger->SetBranchAddress("Mult",      &Mult);
 
 	treeTrigger_clone = treeTrigger->CloneTree(0);
 	

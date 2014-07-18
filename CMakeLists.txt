@@ -39,21 +39,13 @@ add_executable(goat
    )
 target_link_libraries(goat ${ROOT_LIBRARIES})
 
-add_executable(pi0-example
-   src/PPi0Example.cc
+add_executable(pi0-dylan
+   src/PPi0Dylan.cc
    src/PPhysics.cc
    src/GoATTreeManager.cc
    src/GAcquTreeManager.cc
    )
-target_link_libraries(pi0-example ${ROOT_LIBRARIES})
-
-add_executable(eta-example
-   src/PEtaExample.cc
-   src/PPhysics.cc
-   src/GoATTreeManager.cc
-   src/GAcquTreeManager.cc
-   )
-target_link_libraries(eta-example ${ROOT_LIBRARIES})
+target_link_libraries(pi0-dylan ${ROOT_LIBRARIES})
 
 # install some scripts to the bin directory
 # by creating symlinks

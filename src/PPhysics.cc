@@ -39,11 +39,28 @@ Bool_t PPhysics::FillMissingMass(Int_t particle_index, TH1* Hprompt, TH1* Hrando
 {
 	for (Int_t i = 0; i < GetNTagged(); i++)
 	{
+		if(GetPhotonBeam_E(i) < 275) continue;
+		if(GetPhotonBeam_E(i) > 300) continue;	
+	
 		FillMissingMassPair(particle_index, i, Hprompt, Hrandom);
 	}
 	return kTRUE;	
 }
-
+Bool_t	PPhysics::FillTheta(Int_t particle_index, TH1* Tprompt, TH1* Trandom, TH1* Eprompt, TH1* Erandom)
+{
+	for (Int_t i = 0; i < GetNTagged(); i++)
+	{	
+		if (GetnErr() != 0) continue;
+				
+		FillEnergy(particle_index, i, Eprompt, Erandom);		
+	
+		if(GetPhotonBeam_E(i) < 275) continue;
+		if(GetPhotonBeam_E(i) > 300) continue;
+	
+		FillThetaPair(particle_index, i, Tprompt, Trandom);
+	}
+	return kTRUE;	
+}
 Bool_t PPhysics::FillMissingMassPair(Int_t particle_index, Int_t tagger_index, TH1* Hprompt, TH1* Hrandom)
 {
 	time = GetTagged_t(tagger_index) - GoATTree_GetTime(particle_index);
@@ -58,25 +75,55 @@ Bool_t PPhysics::FillMissingMassPair(Int_t particle_index, Int_t tagger_index, T
 	missingp4 	= beam + target - particle;
 
 	if (Prompt) Hprompt->Fill(missingp4.M());
-	if (Random) Hrandom->Fill(missingp4.M());						
+	if (Random) Hrandom->Fill(missingp4.M());
+		
 
 	return kTRUE;
 }
+Bool_t PPhysics::FillThetaPair(Int_t particle_index, Int_t tagger_index,TH1* Tprompt, TH1* Trandom)
+{
+	time = GetTagged_t(tagger_index) - GoATTree_GetTime(particle_index);
+	
+	Prompt = IsPrompt(time);
+	Random = IsRandom(time);
+	
+	if ((!Prompt) && (!Random)) return kFALSE;
 
+	if (Prompt) Tprompt -> Fill(GoATTree_GetTheta(particle_index));
+	if (Random) Trandom -> Fill(GoATTree_GetTheta(particle_index));
+
+	return kTRUE;
+}
+Bool_t PPhysics::FillEnergy(Int_t particle_index, Int_t tagger_index, TH1* Eprompt, TH1* Erandom)
+{
+	if(GoATTree_GetTheta(particle_index) < 87) return kFALSE;
+	if(GoATTree_GetTheta(particle_index) > 93) return kFALSE;
+
+	time = GetTagged_t(tagger_index) - GoATTree_GetTime(particle_index);
+
+	Prompt = IsPrompt(time);
+	Random = IsRandom(time);
+	
+	if ((!Prompt) && (!Random)) return kFALSE;
+
+	if (Prompt) Eprompt->Fill(GetPhotonBeam_E(tagger_index));
+	if (Random) Erandom->Fill(GetPhotonBeam_E(tagger_index));
+		
+
+	return kTRUE;
+}
 Double_t PPhysics::CalcMissingMass(Int_t particle_index, Int_t tagger_index)
 {
 	missingp4 	= CalcMissingP4(particle_index, tagger_index);			
 
 	return missingp4.M();
 }
-
 Double_t PPhysics::CalcMissingEnergy(Int_t particle_index, Int_t tagger_index)
 {
 	missingp4 	= CalcMissingP4(particle_index, tagger_index);						
 
 	return missingp4.T();
 }
-
 TLorentzVector PPhysics::CalcMissingP4(Int_t particle_index, Int_t tagger_index)
 {
 	particle	= GetGoATVector(particle_index);			

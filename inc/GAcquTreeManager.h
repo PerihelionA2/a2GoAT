@@ -85,6 +85,8 @@ private:
    	//Trigger
    	Double_t 	ESum;
    	Int_t 		Mult;
+	Bool_t		Heli;
+	Int_t		nErr;
 	
     //Scalers
     Int_t		EventNumber;
@@ -197,6 +199,8 @@ public:
     
 			Double_t 	GetESum()	const	{return ESum;}
 			Int_t	 	GetMult()	const	{return Mult;}	
+			Bool_t		GetHeli()	const	{return Heli;}
+			Int_t		GetnErr()	const	{return nErr;}
     
     		Int_t 		GetNScaler()    			const	{return NScaler;}
     		Int_t 		GetEventID()        		const	{return EventID;}
